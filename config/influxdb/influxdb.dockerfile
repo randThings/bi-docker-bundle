@@ -1,0 +1,3 @@
+ARG INFLUXDB_VERSION
+
+from influxdb:${INFLUXDB_VERSION}

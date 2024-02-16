@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  influxdb:
+    restart: always
+    build:
+      context: ./config/influxdb
+      dockerfile: influxdb.dockerfile
+      args:
+        - INFLUXDB_VERSION=${INFLUXDB_VERSION}
+    image: x01/influxdb:${INFLUXDB_VERSION}
+    hostname: influxdb
+    container_name: influxdb
+    volumes:
+      - influxdb:/var/lib/influxdb2
+    networks:
+      - bi_net
+    ports:
+      - 8086:8086
+
+  grafana:
+    restart: always
+    build:
+      context: ./config/grafana
+      dockerfile: grafana.dockerfile
+      args:
+        - GRAFANA_VERSION=${GRAFANA_VERSION}
+    image: x01/grafana:${GRAFANA_VERSION}
+    hostname: grafana
+    container_name: grafana
+    #volumes:
+    networks:
+      - bi_net
+    ports:
+      - 3000:3000
+
+
+networks:
+  bi_net:
+    name: bi_net
+
+volumes:
+  influxdb:
+    name: influxdb
